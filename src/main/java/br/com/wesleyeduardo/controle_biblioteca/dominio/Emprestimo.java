@@ -93,6 +93,8 @@ public class Emprestimo {
             } else {
                 this.valorAluguel = getValorFixoAluguel().add(sessentaPorCentoValorFixoDoAlugue());
             }
+        }else{
+            this.valorAluguel = getValorFixoAluguel();
         }
 
         return valorAluguel;

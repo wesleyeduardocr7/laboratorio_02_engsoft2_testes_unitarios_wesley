@@ -12,7 +12,7 @@ public class LivroBuilder {
         LivroBuilder builder = new LivroBuilder();
         builder.livro = new Livro();
         builder.livro.setAutor("Wesley Eduardo");
-        builder.livro.setTitulo("Java");
+        builder.livro.setTitulo("Java 8 Prático");
 
         return builder;
     }

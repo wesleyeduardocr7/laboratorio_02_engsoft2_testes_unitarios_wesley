@@ -14,10 +14,10 @@ public class Livro {
     @Column(name="id_livro")
     private Long id;
 
-    @Column(name="autor", nullable = false)
+    @Column(name="autor")
     private String autor;
 
-    @Column(name="titulo", nullable = false)
+    @Column(name="titulo")
     private String titulo;
 
     @Column(name="emprestado")
@@ -87,5 +87,17 @@ public class Livro {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Livro{" +
+                "id=" + id +
+                ", autor='" + autor + '\'' +
+                ", titulo='" + titulo + '\'' +
+                ", emprestado=" + emprestado +
+                ", reservado=" + reservado +
+                ", historicoEmprestimos=" + historicoEmprestimos +
+                '}';
     }
 }

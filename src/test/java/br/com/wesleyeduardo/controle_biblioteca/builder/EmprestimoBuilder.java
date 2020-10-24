@@ -1,5 +1,4 @@
 package br.com.wesleyeduardo.controle_biblioteca.builder;
-
 import br.com.wesleyeduardo.controle_biblioteca.dominio.Emprestimo;
 import br.com.wesleyeduardo.controle_biblioteca.dominio.Livro;
 import br.com.wesleyeduardo.controle_biblioteca.dominio.Usuario;
@@ -14,15 +13,16 @@ public class EmprestimoBuilder {
 
     public static EmprestimoBuilder umEmprestimo(){
 
-        LocalDate dataDoEmprestimo = LocalDate.of(2020, 10, 23);
-        LocalDate dataDeDevolucao = LocalDate.of(2020, 10, 30);
+        LocalDate dataDoEmprestimo = LocalDate.of(2013, 10, 10);
+        LocalDate dataDevolucao = LocalDate.of(2013, 10, 15);
 
-        EmprestimoBuilder builder = new EmprestimoBuilder();
-        builder.emprestimo = new Emprestimo();
-        builder.emprestimo.setDataEmprestimo(dataDoEmprestimo);
-        builder.emprestimo.setDataDeDevolucao(dataDeDevolucao);
+        EmprestimoBuilder emprestimoBuilder = new EmprestimoBuilder();
 
-        return builder;
+        emprestimoBuilder.emprestimo = new Emprestimo();
+        emprestimoBuilder.emprestimo.setDataEmprestimo(dataDoEmprestimo);
+        emprestimoBuilder.emprestimo.setDataDeDevolucao(dataDevolucao);
+
+        return emprestimoBuilder;
     }
 
     public EmprestimoBuilder comLivro(Livro livro){

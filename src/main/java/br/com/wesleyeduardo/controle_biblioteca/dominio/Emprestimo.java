@@ -1,6 +1,7 @@
 package br.com.wesleyeduardo.controle_biblioteca.dominio;
 import javax.persistence.*;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.Period;
 import java.util.Objects;
@@ -67,7 +68,7 @@ public class Emprestimo {
     }
 
     public LocalDate getDataDevolucaoPrevista() {
-        return dataEmprestimo.plusDays(7);
+        return getDataEmprestimo().plusDays(7);
     }
 
 
@@ -92,20 +93,21 @@ public class Emprestimo {
 
     public BigDecimal getValorAluguel() {
 
-        if(isEmAtraso()) {
+        if (isEmAtraso()) {
 
-            BigDecimal valorMulta = calculaValorDaMulta(getDataDeDevolucao(), getDataDevolucaoPrevista());
+            BigDecimal valorMulta = calculaValorDaMulta(getDataDeDevolucao());
 
-            if (valorMulta.compareTo(new BigDecimal(0)) <= sessentaPorCentoValorFixoDoAlugue().scale()) {
-                this.valorAluguel = getValorFixoAluguel().add(valorMulta);
-            } else {
+            if (valorMulta.compareTo(sessentaPorCentoValorFixoDoAlugue()) == 1) {
                 this.valorAluguel = getValorFixoAluguel().add(sessentaPorCentoValorFixoDoAlugue());
+            } else {
+                this.valorAluguel = getValorFixoAluguel().add(valorMulta);
             }
-        }else{
+
+        } else {
             this.valorAluguel = getValorFixoAluguel();
         }
 
-        return valorAluguel;
+        return valorAluguel.setScale(2, RoundingMode.HALF_EVEN);
     }
 
     private BigDecimal getValorFixoAluguel(){
@@ -113,11 +115,11 @@ public class Emprestimo {
     }
 
     private boolean isEmAtraso(){
-        return dataDeDevolucao.isAfter(dataDevolucaoPrevista);
+        return dataDeDevolucao.isAfter(getDataDevolucaoPrevista());
     }
 
-    private BigDecimal calculaValorDaMulta(LocalDate dataDeDevolucao, LocalDate dataDevolucaoPrevista){
-        Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso(dataDeDevolucao,dataDevolucaoPrevista);
+    private BigDecimal calculaValorDaMulta(LocalDate dataDeDevolucao){
+        Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso(dataDeDevolucao);
         return  new BigDecimal(quantidadeDeDiasEmAtraso * 0.4);
     }
 
@@ -125,8 +127,8 @@ public class Emprestimo {
         return new BigDecimal(5).multiply(new BigDecimal(0.6));
     }
 
-    private Integer getQuantidadeDeDiasEmAtraso(LocalDate dataDeDevolucao, LocalDate dataDevolucaoPrevista){
-        Period period = Period.between(dataDeDevolucao,dataDevolucaoPrevista);
+    private Integer getQuantidadeDeDiasEmAtraso(LocalDate dataDeDevolucao){
+        Period period = Period.between(getDataDevolucaoPrevista(),dataDeDevolucao);
         return period.getDays();
     }
 
@@ -141,5 +143,18 @@ public class Emprestimo {
     @Override
     public int hashCode() {
         return Objects.hash(id);
+    }
+
+    @Override
+    public String toString() {
+        return "Emprestimo{" +
+                "id=" + id +
+                ", usuario=" + usuario.getNome() +
+                ", dataEmprestimo=" + dataEmprestimo +
+                ", dataDevolucaoPrevista=" + getDataDevolucaoPrevista() +
+                ", dataDeDevolucao=" + dataDeDevolucao +
+                ", livro=" + livro.getTitulo() +
+                ", valorAluguel=" + getValorAluguel() +
+                '}';
     }
 }

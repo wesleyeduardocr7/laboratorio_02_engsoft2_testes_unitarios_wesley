@@ -4,7 +4,6 @@ import br.com.wesleyeduardo.controle_biblioteca.builder.LivroBuilder;
 import br.com.wesleyeduardo.controle_biblioteca.builder.UsuarioBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
@@ -13,9 +12,16 @@ public class EmprestimoTest {
     @Test
     void deveRealizarEmprestimoDeUmLivroNaoReservado(){
 
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
+
         Livro livro = LivroBuilder.umLivro().semReserva().constroi();
 
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
+        emprestimo.setUsuario(usuario);
+        emprestimo.setLivro(livro);
+
+        System.out.println(emprestimo.toString());
 
         Assertions.assertDoesNotThrow(() -> emprestimo.setLivro(livro));
     }
@@ -23,9 +29,11 @@ public class EmprestimoTest {
     @Test
     void naoDeveRealizarEmprestimoDeUmLivroReservado(){
 
+
         Livro livro = LivroBuilder.umLivro().reservado().constroi();
 
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
 
         Assertions.assertThrows( IllegalArgumentException.class,
                 () -> emprestimo.setLivro(livro),

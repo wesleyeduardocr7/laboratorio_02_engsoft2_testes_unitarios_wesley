@@ -15,7 +15,7 @@ public class EmprestimoTest {
         Livro livro = LivroBuilder.umLivro().semReserva().constroi();
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
-        LocalDate dataDevolucao = LocalDate.of(2013, 10, 30);
+        LocalDate dataDevolucao = LocalDate.of(2013, 10, 20);
 
         emprestimo.setDataDeDevolucao(dataDevolucao);
         emprestimo.setUsuario(usuario);
@@ -50,6 +50,7 @@ public class EmprestimoTest {
         emprestimo.setDataEmprestimo(dataDeEmprestimo);
 
         Assertions.assertEquals(emprestimo.getDataDevolucaoPrevista(), dataDeDevolucaoPrevista);
+
     }
 
     @Test
@@ -82,7 +83,6 @@ public class EmprestimoTest {
         Assertions.assertDoesNotThrow(() -> emprestimo.setUsuario(usuario));
     }
 
-
     @Test // Professor achei esse teste um pouco fora do contexto, mesmo assim mantive o que se pede no trabalho
     void naoDeveCriarEmprestimoComUsuarioComTresEmprestimos(){
 
@@ -103,8 +103,8 @@ public class EmprestimoTest {
         Livro livro = LivroBuilder.umLivro().semReserva().constroi();
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
-        LocalDate dataDeEmprestimo = LocalDate.of(2015, 11, 23);
-        LocalDate dataDeDevolucao = LocalDate.of(2015,11,26);
+        LocalDate dataDeEmprestimo = LocalDate.of(2015, 11, 10);
+        LocalDate dataDeDevolucao = LocalDate.of(2015,11,15);
 
         emprestimo.setUsuario(usuario);
         emprestimo.setLivro(livro);
@@ -159,19 +159,14 @@ public class EmprestimoTest {
         Livro livro = LivroBuilder.umLivro().semReserva().constroi();
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
-        LocalDate dataDeEmprestimo = LocalDate.of(2020, 10, 1);
-        LocalDate dataDeDevolucao = LocalDate.of(2020,10,31);
+        LocalDate dataDeEmprestimo = LocalDate.of(2020, 10, 20);
+        LocalDate dataDeDevolucao = LocalDate.of(2020,11,26);
 
         emprestimo.setUsuario(usuario);
         emprestimo.setLivro(livro);
         emprestimo.setDataEmprestimo(dataDeEmprestimo);
         emprestimo.setDataDeDevolucao(dataDeDevolucao);
 
-        System.out.println(emprestimo.toString());
-
         Assertions.assertEquals(8, emprestimo.getValorAluguel().doubleValue(), 0.001);
     }
-
-
-
 }

@@ -91,22 +91,23 @@ public class Emprestimo {
     }
 
     public BigDecimal getValorAluguel() {
-
         if (isEmAtraso()) {
-
-            BigDecimal valorMulta = calculaValorDaMulta();
-
-            if (valorMulta.compareTo(sessentaPorCentoValorFixoDoAlugue()) == 1) {
-                this.valorAluguel = getValorFixoAluguel().add(sessentaPorCentoValorFixoDoAlugue());
-            } else {
-                this.valorAluguel = getValorFixoAluguel().add(valorMulta);
-            }
-
+            aplicaMulta();
         } else {
             this.valorAluguel = getValorFixoAluguel();
         }
-
         return valorAluguel.setScale(2, RoundingMode.HALF_EVEN);
+    }
+
+    private void aplicaMulta(){
+
+        BigDecimal valorMulta = calculaValorDaMulta();
+
+        if (valorMulta.compareTo(sessentaPorCentoValorFixoDoAlugue()) == 1) {
+            this.valorAluguel = getValorFixoAluguel().add(sessentaPorCentoValorFixoDoAlugue());
+        } else {
+            this.valorAluguel = getValorFixoAluguel().add(valorMulta);
+        }
     }
 
     private BigDecimal getValorFixoAluguel(){
@@ -119,7 +120,7 @@ public class Emprestimo {
 
     private BigDecimal calculaValorDaMulta(){
         Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso();
-        return  new BigDecimal(quantidadeDeDiasEmAtraso * 0.4);
+        return new BigDecimal(quantidadeDeDiasEmAtraso * 0.4);
     }
 
     private BigDecimal sessentaPorCentoValorFixoDoAlugue(){
@@ -144,16 +145,4 @@ public class Emprestimo {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Emprestimo{" +
-                "id=" + id +
-                ", usuario=" + usuario.getNome() +
-                ", dataEmprestimo=" + dataEmprestimo +
-                ", dataDevolucaoPrevista=" + getDataDevolucaoPrevista() +
-                ", dataDeDevolucao=" + dataDeDevolucao +
-                ", livro=" + livro.getTitulo() +
-                ", valorAluguel=" + getValorAluguel() +
-                '}';
-    }
 }

@@ -1,18 +1,14 @@
 package br.com.wesleyeduardo.controle_biblioteca.builder;
 import br.com.wesleyeduardo.controle_biblioteca.dominio.Emprestimo;
 import br.com.wesleyeduardo.controle_biblioteca.dominio.Usuario;
-
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.List;
-import java.util.Set;
 
 public class UsuarioBuilder {
 
     private Usuario usuario;
-    private UsuarioBuilder(){
 
-    }
+    private UsuarioBuilder(){}
 
     public static UsuarioBuilder umUsuario(){
         UsuarioBuilder builder = new UsuarioBuilder();
@@ -62,8 +58,6 @@ public class UsuarioBuilder {
         this.usuario.setHistoricoDeEmprestimos(emprestimos);
         return this;
     }
-
-
 
     public Usuario constroi(){
         return this.usuario;

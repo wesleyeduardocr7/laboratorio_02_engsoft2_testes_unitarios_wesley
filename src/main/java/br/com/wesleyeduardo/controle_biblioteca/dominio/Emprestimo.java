@@ -143,16 +143,4 @@ public class Emprestimo {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Emprestimo{" +
-                "id=" + id +
-                ", usuario=" + usuario.getNome() +
-                ", dataEmprestimo=" + dataEmprestimo +
-                ", dataDevolucaoPrevista=" + getDataDevolucaoPrevista() +
-                ", dataDeDevolucao=" + dataDeDevolucao +
-                ", livro=" + livro.getTitulo() +
-                ", valorAluguel=" + getValorAluguel() +
-                '}';
-    }
 }

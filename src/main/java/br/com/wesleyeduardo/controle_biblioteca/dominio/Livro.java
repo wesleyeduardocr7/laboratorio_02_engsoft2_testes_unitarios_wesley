@@ -89,15 +89,4 @@ public class Livro {
         return Objects.hash(id);
     }
 
-    @Override
-    public String toString() {
-        return "Livro{" +
-                "id=" + id +
-                ", autor='" + autor + '\'' +
-                ", titulo='" + titulo + '\'' +
-                ", emprestado=" + emprestado +
-                ", reservado=" + reservado +
-                ", historicoEmprestimos=" + historicoEmprestimos +
-                '}';
-    }
 }

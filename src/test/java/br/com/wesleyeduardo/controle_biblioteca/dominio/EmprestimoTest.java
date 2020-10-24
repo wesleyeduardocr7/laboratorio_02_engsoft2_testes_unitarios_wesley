@@ -83,7 +83,7 @@ public class EmprestimoTest {
     }
 
 
-    @Test// problema nesse teste
+    @Test
     void naoDeveCriarEmprestimoComUsuarioComTresEmprestimos(){
 
         Usuario usuario = UsuarioBuilder.umUsuario().comTresEmprestimos().constroi();
@@ -114,6 +114,63 @@ public class EmprestimoTest {
         Assertions.assertEquals(5, emprestimo.getValorAluguel().doubleValue(), 0.001);
     }
 
+    @Test
+    void deveRealizarDevolucaoNaDataPrevista(){
+
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
+        Livro livro = LivroBuilder.umLivro().semReserva().constroi();
+        Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
+        LocalDate dataDeEmprestimo = LocalDate.of(2015, 11, 23);
+        LocalDate dataDeDevolucao = LocalDate.of(2015,11,30);
+
+        emprestimo.setUsuario(usuario);
+        emprestimo.setLivro(livro);
+        emprestimo.setDataEmprestimo(dataDeEmprestimo);
+        emprestimo.setDataDeDevolucao(dataDeDevolucao);
+
+        Assertions.assertEquals(5, emprestimo.getValorAluguel().doubleValue(), 0.001);
+    }
+
+
+    @Test
+    void deveRealizarDevolucaoUmDiaAposADataPrevista(){
+
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
+        Livro livro = LivroBuilder.umLivro().semReserva().constroi();
+        Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
+        LocalDate dataDeEmprestimo = LocalDate.of(2015, 11, 20);
+        LocalDate dataDeDevolucao = LocalDate.of(2015,11,28);
+
+        emprestimo.setUsuario(usuario);
+        emprestimo.setLivro(livro);
+        emprestimo.setDataEmprestimo(dataDeEmprestimo);
+        emprestimo.setDataDeDevolucao(dataDeDevolucao);
+
+        Assertions.assertEquals(5.40, emprestimo.getValorAluguel().doubleValue(), 0.001);
+    }
+
+
+    @Test
+    void deveRealizarDevolucaoTrintaDiasAposADataPrevista(){
+
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
+        Livro livro = LivroBuilder.umLivro().semReserva().constroi();
+        Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
+        LocalDate dataDeEmprestimo = LocalDate.of(2020, 10, 1);
+        LocalDate dataDeDevolucao = LocalDate.of(2020,10,31);
+
+        emprestimo.setUsuario(usuario);
+        emprestimo.setLivro(livro);
+        emprestimo.setDataEmprestimo(dataDeEmprestimo);
+        emprestimo.setDataDeDevolucao(dataDeDevolucao);
+
+        System.out.println(emprestimo.toString());
+
+        Assertions.assertEquals(8, emprestimo.getValorAluguel().doubleValue(), 0.001);
+    }
 
 
 

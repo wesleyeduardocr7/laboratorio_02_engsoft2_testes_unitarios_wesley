@@ -52,7 +52,7 @@ public class Emprestimo {
 
     public void setUsuario(Usuario usuario) {
         if(usuario.getHistoricoDeEmprestimos().size()>2){
-            new IllegalArgumentException("Usuário já possui dois emprestimos");
+            throw  new IllegalArgumentException("Usuário já possui dois emprestimos");
         }
         this.usuario = usuario;
     }
@@ -66,7 +66,8 @@ public class Emprestimo {
     }
 
     public LocalDate getDataDevolucaoPrevista() {
-        return getDataEmprestimo().plusDays(7);
+        this.dataDevolucaoPrevista = getDataEmprestimo().plusDays(7);
+        return this.dataDevolucaoPrevista;
     }
 
 
@@ -93,7 +94,7 @@ public class Emprestimo {
 
         if (isEmAtraso()) {
 
-            BigDecimal valorMulta = calculaValorDaMulta(getDataDeDevolucao());
+            BigDecimal valorMulta = calculaValorDaMulta();
 
             if (valorMulta.compareTo(sessentaPorCentoValorFixoDoAlugue()) == 1) {
                 this.valorAluguel = getValorFixoAluguel().add(sessentaPorCentoValorFixoDoAlugue());
@@ -116,8 +117,8 @@ public class Emprestimo {
         return dataDeDevolucao.isAfter(getDataDevolucaoPrevista());
     }
 
-    private BigDecimal calculaValorDaMulta(LocalDate dataDeDevolucao){
-        Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso(dataDeDevolucao);
+    private BigDecimal calculaValorDaMulta(){
+        Integer quantidadeDeDiasEmAtraso = getQuantidadeDeDiasEmAtraso();
         return  new BigDecimal(quantidadeDeDiasEmAtraso * 0.4);
     }
 
@@ -125,8 +126,8 @@ public class Emprestimo {
         return new BigDecimal(5).multiply(new BigDecimal(0.6));
     }
 
-    private Integer getQuantidadeDeDiasEmAtraso(LocalDate dataDeDevolucao){
-        Period period = Period.between(getDataDevolucaoPrevista(),dataDeDevolucao);
+    private Integer getQuantidadeDeDiasEmAtraso(){
+        Period period = Period.between(getDataDevolucaoPrevista(),getDataDeDevolucao());
         return period.getDays();
     }
 
@@ -143,4 +144,16 @@ public class Emprestimo {
         return Objects.hash(id);
     }
 
+    @Override
+    public String toString() {
+        return "Emprestimo{" +
+                "id=" + id +
+                ", usuario=" + usuario.getNome() +
+                ", dataEmprestimo=" + dataEmprestimo +
+                ", dataDevolucaoPrevista=" + getDataDevolucaoPrevista() +
+                ", dataDeDevolucao=" + dataDeDevolucao +
+                ", livro=" + livro.getTitulo() +
+                ", valorAluguel=" + getValorAluguel() +
+                '}';
+    }
 }

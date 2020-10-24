@@ -83,7 +83,7 @@ public class EmprestimoTest {
     }
 
 
-    @Test
+    @Test // Professor achei esse teste um pouco fora do contexto, mesmo assim mantive o que se pede no trabalho
     void naoDeveCriarEmprestimoComUsuarioComTresEmprestimos(){
 
         Usuario usuario = UsuarioBuilder.umUsuario().comTresEmprestimos().constroi();

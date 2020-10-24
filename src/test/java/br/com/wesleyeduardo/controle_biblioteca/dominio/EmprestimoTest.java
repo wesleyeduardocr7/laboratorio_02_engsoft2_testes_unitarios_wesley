@@ -4,7 +4,6 @@ import br.com.wesleyeduardo.controle_biblioteca.builder.LivroBuilder;
 import br.com.wesleyeduardo.controle_biblioteca.builder.UsuarioBuilder;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
-import java.math.BigDecimal;
 import java.time.LocalDate;
 
 public class EmprestimoTest {
@@ -13,15 +12,14 @@ public class EmprestimoTest {
     void deveRealizarEmprestimoDeUmLivroNaoReservado(){
 
         Usuario usuario = UsuarioBuilder.umUsuario().constroi();
-
         Livro livro = LivroBuilder.umLivro().semReserva().constroi();
-
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
+        LocalDate dataDevolucao = LocalDate.of(2013, 10, 30);
+
+        emprestimo.setDataDeDevolucao(dataDevolucao);
         emprestimo.setUsuario(usuario);
         emprestimo.setLivro(livro);
-
-        System.out.println(emprestimo.toString());
 
         Assertions.assertDoesNotThrow(() -> emprestimo.setLivro(livro));
     }
@@ -29,15 +27,15 @@ public class EmprestimoTest {
     @Test
     void naoDeveRealizarEmprestimoDeUmLivroReservado(){
 
-
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
         Livro livro = LivroBuilder.umLivro().reservado().constroi();
-
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
+        emprestimo.setUsuario(usuario);
 
         Assertions.assertThrows( IllegalArgumentException.class,
                 () -> emprestimo.setLivro(livro),
-                "Não pode realizar empréstimo de um livro já reservado" );
+                "Não é possível realizar empréstimo de um livro já reservado" );
     }
 
     @Test
@@ -55,7 +53,7 @@ public class EmprestimoTest {
     }
 
     @Test
-    void deveCriarEmprestimoComUsuarioSemEmprestimos(){
+    void devePermitirEmprestimoComUsuarioSemEmprestimos(){
 
         Usuario usuario = UsuarioBuilder.umUsuario().constroi();
 
@@ -74,7 +72,7 @@ public class EmprestimoTest {
         Assertions.assertDoesNotThrow(() -> emprestimo.setUsuario(usuario));
     }
 
-    @Test // teste com erro
+    @Test
     void deveCriarEmprestimoComUsuarioComDoisEmprestimos(){
 
         Usuario usuario = UsuarioBuilder.umUsuario().comDoisEmprestimos().constroi();
@@ -85,21 +83,37 @@ public class EmprestimoTest {
     }
 
 
-    @Test
-    void deveRealizarDevolucaoAntesDaDataPrevista(){
+    @Test// problema nesse teste
+    void naoDeveCriarEmprestimoComUsuarioComTresEmprestimos(){
 
-        //Usuario usuario = UsuarioBuilder.umUsuario().comUmEmprestimo().constroi();
+        Usuario usuario = UsuarioBuilder.umUsuario().comTresEmprestimos().constroi();
 
         Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
 
-       // LocalDate dataDeEmprestimo = LocalDate.of(2020, 10, 23);
+        Assertions.assertThrows( IllegalArgumentException.class,
+                () -> emprestimo.setUsuario(usuario),
+                "Não pode realizar empréstimo para um usuário com dois livros já reservados" );
 
-        LocalDate dataDeDevolucao = LocalDate.of(2020,10,25);
+    }
 
+    @Test
+    void deveRealizarDevolucaoAntesDaDataPrevista(){
+
+        Usuario usuario = UsuarioBuilder.umUsuario().constroi();
+        Livro livro = LivroBuilder.umLivro().semReserva().constroi();
+        Emprestimo emprestimo = EmprestimoBuilder.umEmprestimo().constroi();
+
+        LocalDate dataDeEmprestimo = LocalDate.of(2015, 11, 23);
+        LocalDate dataDeDevolucao = LocalDate.of(2015,11,26);
+
+        emprestimo.setUsuario(usuario);
+        emprestimo.setLivro(livro);
+        emprestimo.setDataEmprestimo(dataDeEmprestimo);
         emprestimo.setDataDeDevolucao(dataDeDevolucao);
 
-        Assertions.assertEquals(new BigDecimal(5), emprestimo.getValorAluguel());
+        Assertions.assertEquals(5, emprestimo.getValorAluguel().doubleValue(), 0.001);
     }
+
 
 
 

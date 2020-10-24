@@ -51,11 +51,9 @@ public class Emprestimo {
     }
 
     public void setUsuario(Usuario usuario) {
-
         if(usuario.getHistoricoDeEmprestimos().size()>2){
-            new IllegalArgumentException("Ja tem emprestimo");
+            new IllegalArgumentException("Usuário já possui dois emprestimos");
         }
-
         this.usuario = usuario;
     }
 
@@ -86,7 +84,7 @@ public class Emprestimo {
 
     public void setLivro(Livro livro) {
         if(livro.isReservado()){
-            throw new IllegalArgumentException("O livro ja está reservado");
+            throw new IllegalArgumentException("O livro já se encontra Reservado");
         }
         this.livro = livro;
     }

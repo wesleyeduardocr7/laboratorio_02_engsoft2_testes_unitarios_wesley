@@ -14,13 +14,11 @@ public class EmprestimoBuilder {
     public static EmprestimoBuilder umEmprestimo(){
 
         LocalDate dataDoEmprestimo = LocalDate.of(2013, 10, 10);
-        LocalDate dataDevolucao = LocalDate.of(2013, 10, 15);
 
         EmprestimoBuilder emprestimoBuilder = new EmprestimoBuilder();
 
         emprestimoBuilder.emprestimo = new Emprestimo();
         emprestimoBuilder.emprestimo.setDataEmprestimo(dataDoEmprestimo);
-        emprestimoBuilder.emprestimo.setDataDeDevolucao(dataDevolucao);
 
         return emprestimoBuilder;
     }

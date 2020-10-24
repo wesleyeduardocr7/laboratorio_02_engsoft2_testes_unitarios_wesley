@@ -1,8 +1,6 @@
 package br.com.wesleyeduardo.controle_biblioteca.dominio;
 import javax.persistence.*;
-import java.util.LinkedHashSet;
-import java.util.Objects;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name="usuario")
@@ -21,7 +19,7 @@ public class Usuario {
     private String matricula;
 
     @OneToMany
-    private Set<Emprestimo> historicoDeEmprestimos = new LinkedHashSet<>();
+    private List<Emprestimo> historicoDeEmprestimos = new ArrayList<>();
 
     public Usuario(){}
 
@@ -49,11 +47,12 @@ public class Usuario {
         this.matricula = matricula;
     }
 
-    public Set<Emprestimo> getHistoricoDeEmprestimos() {
+
+    public List<Emprestimo> getHistoricoDeEmprestimos() {
         return historicoDeEmprestimos;
     }
 
-    public void setHistoricoDeEmprestimos(Set<Emprestimo> historicoDeEmprestimos) {
+    public void setHistoricoDeEmprestimos(List<Emprestimo> historicoDeEmprestimos) {
         this.historicoDeEmprestimos = historicoDeEmprestimos;
     }
 

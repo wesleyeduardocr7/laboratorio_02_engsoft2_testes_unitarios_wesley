@@ -1,6 +1,10 @@
 package br.com.wesleyeduardo.controle_biblioteca.dominio;
 import javax.persistence.*;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Size;
+import java.util.LinkedHashSet;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name="usuario")
@@ -17,6 +21,9 @@ public class Usuario {
 
     @Column(name="matricula")
     private String matricula;
+
+    @OneToMany
+    private Set<Emprestimo> historicoDeEmprestimos = new LinkedHashSet<>();
 
     public Usuario(){}
 
@@ -42,6 +49,14 @@ public class Usuario {
 
     public void setMatricula(String matricula) {
         this.matricula = matricula;
+    }
+
+    public Set<Emprestimo> getHistoricoDeEmprestimos() {
+        return historicoDeEmprestimos;
+    }
+
+    public void setHistoricoDeEmprestimos(Set<Emprestimo> historicoDeEmprestimos) {
+        this.historicoDeEmprestimos = historicoDeEmprestimos;
     }
 
     @Override

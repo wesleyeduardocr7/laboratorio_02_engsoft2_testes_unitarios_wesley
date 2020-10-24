@@ -2,6 +2,7 @@ package br.com.wesleyeduardo.controle_biblioteca.dominio;
 import javax.persistence.*;
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.time.Period;
 import java.util.Objects;
 
 @Entity
@@ -15,20 +16,20 @@ public class Emprestimo {
     private Long id;
 
     @ManyToOne
-    @JoinColumn(name="id_usuario", nullable = false)
+    @JoinColumn(name="id_usuario")
     private Usuario usuario;
 
-    @Column(name="data_emprestimo", nullable = false)
+    @Column(name="data_emprestimo")
     private LocalDate dataEmprestimo;
 
-    @Column(name="data_devolucao_prevista", nullable = false)
+    @Column(name="data_devolucao_prevista")
     private LocalDate dataDevolucaoPrevista;
 
     @Column(name="data_devolucao")
     private LocalDate dataDeDevolucao;
 
     @ManyToOne
-    @JoinColumn(name="id_livro", nullable = false)
+    @JoinColumn(name="id_livro")
     private Livro livro;
 
     @Column(name="valor_aluguel")
@@ -49,9 +50,13 @@ public class Emprestimo {
     }
 
     public void setUsuario(Usuario usuario) {
+
+        if(usuario.getHistoricoDeEmprestimos().size()>2){
+            new IllegalArgumentException("Ja tem emprestimo");
+        }
+
         this.usuario = usuario;
     }
-
 
     public LocalDate getDataEmprestimo() {
         return dataEmprestimo;
@@ -79,6 +84,9 @@ public class Emprestimo {
     }
 
     public void setLivro(Livro livro) {
+        if(livro.isReservado()){
+            throw new IllegalArgumentException("O livro ja está reservado");
+        }
         this.livro = livro;
     }
 
@@ -118,9 +126,8 @@ public class Emprestimo {
     }
 
     private Integer getQuantidadeDeDiasEmAtraso(LocalDate dataDeDevolucao, LocalDate dataDevolucaoPrevista){
-        Integer diaDevolucao = dataDeDevolucao.getDayOfMonth();
-        Integer diaDevolucaoPrevista = dataDevolucaoPrevista.getDayOfMonth();
-        return diaDevolucao-diaDevolucaoPrevista;
+        Period period = Period.between(dataDeDevolucao,dataDevolucaoPrevista);
+        return period.getDays();
     }
 
     @Override
